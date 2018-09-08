@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-require 'quasi_functional/result'
+require 'mfp/result'
 
-module QuasiFunctional
+module MFP
 
   RSpec.describe Result do
     let(:value) {3}

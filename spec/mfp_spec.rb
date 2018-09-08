@@ -1,6 +1,6 @@
-RSpec.describe QuasiFunctional do
+RSpec.describe MFP do
   it "has a version number" do
-    expect(QuasiFunctional::VERSION).not_to be nil
+    expect(MVP::VERSION).not_to be nil
   end
 
   describe '.Result' do

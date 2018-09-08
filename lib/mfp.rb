@@ -1,9 +1,9 @@
-require 'quasi_functional/version'
-require 'quasi_functional/result'
-require 'quasi_functional/railway'
+require 'mfp/version'
+require 'mfp/result'
+require 'mfp/railway'
 
 # FP-style (but non-FP) utilities for Ruby
-module QuasiFunctional
+module MFP
   def self.Result
     self::Result::DSL
   end

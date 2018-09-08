@@ -1,7 +1,7 @@
-require 'quasi_functional/result/success'
-require 'quasi_functional/result/failure'
+require 'mfp/result/success'
+require 'mfp/result/failure'
 
-module QuasiFunctional
+module MFP
   module Result
 
     module DSL

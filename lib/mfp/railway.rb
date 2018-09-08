@@ -1,6 +1,6 @@
-require 'quasi_functional/result'
+require 'mfp/result'
 
-module QuasiFunctional
+module MFP
 
   module Railway
     include Result::DSL

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-require 'quasi_functional/result/success'
+require 'mfp/result/failure'
 
-module QuasiFunctional
+module MFP
   module Result
 
-    RSpec.describe Success do
+    RSpec.describe Failure do
       let(:dummy) {Object.new}
       let(:wrapped) {3}
       let(:result) {described_class.new(wrapped)}
@@ -18,74 +18,79 @@ module QuasiFunctional
         expect(result).to be_a(Result::Base)
       end
 
+      it 'is frozen' do
+        expect(result).to be_frozen
+      end
+
       describe '#success?' do
         let(:success) {result.success?}
 
-        it 'is true' do
-          expect(success).to eql(true)
+        it 'is false' do
+          expect(success).to eql(false)
         end
       end
 
       describe '#failure?' do
         let(:failure) {result.failure?}
 
-        it 'is false' do
-          expect(failure).to eql(false)
+        it 'is true' do
+          expect(failure).to eql(true)
         end
       end
 
       describe '#value' do
         let(:value) {result.value}
 
-        it 'is the wrapped value' do
-          expect(value).to eql(wrapped)
+        it 'raises an exception' do
+          expect {value}.to raise_exception
         end
       end
 
       describe '#error' do
         let(:error) {result.error}
 
-        it 'raises an exception' do
-          expect {error}.to raise_exception
+        it 'is the wrapped error' do
+          expect(error).to eql(wrapped)
         end
       end
 
       describe '#and_then' do
-        it 'yields the wrapped value to the block' do
-          expect(dummy).to receive(:process).with(wrapped)
+        it 'does not execute the given block' do
+          expect(dummy).not_to receive(:process)
 
           result.and_then {|v| dummy.process(v)}
         end
 
-        it 'is the result of yielding the wrapped value to the block' do
-          actual = result.and_then {|v| v + 1}
-
-          expect(actual).to eql(wrapped + 1)
-        end
-      end
-
-      describe '#or_else' do
-        it 'does not call the block' do
-          expect(dummy).not_to receive(:process)
-
-          result.or_else {|v| dummy.process(v)}
-        end
-
-        it 'is the success itself' do
-          actual = result.or_else {|v| v}
+        it 'is the failure itself' do
+          actual = result.and_then {|v| v}
 
           expect(actual).to eql(result)
         end
       end
 
-      describe '#on_success' do
+      describe '#or_else' do
+
         it 'yields the wrapped value to the block' do
           expect(dummy).to receive(:process).with(wrapped)
+
+          result.or_else {|v| dummy.process(v)}
+        end
+
+        it 'is the result of the block' do
+          actual = result.or_else {|v| v + 1}
+
+          expect(actual).to eql(wrapped + 1)
+        end
+      end
+
+      describe '#on_success' do
+        it 'does not call the block' do
+          expect(dummy).not_to receive(:process)
 
           result.on_success {|v| dummy.process(v)}
         end
 
-        it 'is the success itself' do
+        it 'is the failure itself' do
           actual = result.on_success {|v| v}
 
           expect(actual).to eql(result)
@@ -93,19 +98,18 @@ module QuasiFunctional
       end
 
       describe '#on_failure' do
-        it 'does not call the block' do
-          expect(dummy).not_to receive(:process)
+        it 'yields the wrapped value to the block' do
+          expect(dummy).to receive(:process).with(wrapped)
 
           result.on_failure {|v| dummy.process(v)}
         end
 
-        it 'is the success itself' do
+        it 'is the failure itself' do
           actual = result.on_failure {|v| v}
 
           expect(actual).to eql(result)
         end
       end
-
 
     end
 

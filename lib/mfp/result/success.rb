@@ -1,6 +1,6 @@
-require 'quasi_functional/result/base'
+require 'mfp/result/base'
 
-module QuasiFunctional
+module MFP
   module Result
 
     class Success < Base

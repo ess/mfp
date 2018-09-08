@@ -6,7 +6,7 @@ SimpleCov.start do
   add_filter '/tmp/'
 end
 
-require "quasi_functional"
+require "mfp"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

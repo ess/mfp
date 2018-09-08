@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-require 'quasi_functional/railway'
+require 'mfp/railway'
 
 class ComplicatedProcess
-  include QuasiFunctional.Railway
+  include MFP.Railway
 
   step :step_1
   step :step_2
@@ -11,10 +11,10 @@ class ComplicatedProcess
 end
 
 class EmptyProcess
-  include QuasiFunctional.Railway
+  include MFP.Railway
 end
 
-module QuasiFunctional
+module MFP
 
   RSpec.describe Railway do
     let(:steps) {[:step_1, :step_2, :step_3]}

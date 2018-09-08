@@ -2,16 +2,16 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'quasi_functional/version'
+require 'mfp/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'quasi_functional'
-  spec.version       = QuasiFunctional::VERSION
+  spec.name          = 'mfp'
+  spec.version       = MFP::VERSION
   spec.authors       = ['Dennis Walters']
   spec.email         = ['pooster@gmail.com']
 
   spec.summary       = %q{FP-style (but not really FP) stuff for Ruby}
-  spec.homepage      = 'https://github.com/ess/quasi_functional'
+  spec.homepage      = 'https://github.com/ess/mfp'
   spec.license       = 'MIT'
 
   # Specify which files should be added to the gem when it is released.

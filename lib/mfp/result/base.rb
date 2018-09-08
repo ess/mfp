@@ -1,4 +1,4 @@
-module QuasiFunctional
+module MFP
   module Result
 
     class Base

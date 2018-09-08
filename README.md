@@ -1,13 +1,13 @@
-# QuasiFunctional #
+# MFP #
 
-The goal of the QuasiFunctional gem is to bring some of the goodness of [dry-rb](https://dry-rb.org) to older versions of Ruby. That being the case, dry-rb is a ***MUCH*** more thorough solution, and if you aren't constrained to incredibly outdated Ruby versions, I would implore you to use it instead of this.
+The goal of the MFP (Minimally-Functional Programming) gem is to bring some of the goodness of [dry-rb](https://dry-rb.org) to older versions of Ruby. That being the case, dry-rb is a ***MUCH*** more thorough solution, and if you aren't constrained to incredibly outdated Ruby versions, I would implore you to use it instead of this.
 
 ## Installation ##
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'quasi_functional'
+gem 'mfp'
 ```
 
 And then execute:
@@ -16,11 +16,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install quasi_functional
+    $ gem install mfp
 
 ## Usage
 
-QuasiFunctional includes minimally-viable implementeations of the `Result` concept from more functional languages as well as a mechanism for doing [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/). These map to the same ideas as `Dry::Monads::Result` and `Dry::Transaction`.
+MFP includes minimally-viable implementeations of the `Result` concept from more functional languages as well as a mechanism for doing [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/). These map to the same ideas as `Dry::Monads::Result` and `Dry::Transaction`, but are not really proper FP implementations.
 
 ### Result ###
 
@@ -38,7 +38,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/quasi_functional.
+Bug reports and pull requests are welcome on GitHub at https://github.com/ess/mfp.
+
+As this project uses [git-flow](https://nvie.com/posts/a-successful-git-branching-model/), please base any contributions you wish to make on the "develop" branch.
 
 ## License
 
