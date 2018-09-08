@@ -1,6 +1,6 @@
 RSpec.describe MFP do
   it "has a version number" do
-    expect(MVP::VERSION).not_to be nil
+    expect(MFP::VERSION).not_to be nil
   end
 
   describe '.Result' do
