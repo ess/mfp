@@ -1,10 +1,8 @@
-# QuasiFunctional
+# QuasiFunctional #
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/quasi_functional`. To experiment with that code, run `bin/console` for an interactive prompt.
+The goal of the QuasiFunctional gem is to bring some of the goodness of [dry-rb](https://dry-rb.org) to older versions of Ruby. That being the case, dry-rb is a ***MUCH*** more thorough solution, and if you aren't constrained to incredibly outdated Ruby versions, I would implore you to use it instead of this.
 
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
+## Installation ##
 
 Add this line to your application's Gemfile:
 
@@ -22,7 +20,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+QuasiFunctional includes minimally-viable implementeations of the `Result` concept from more functional languages as well as a mechanism for doing [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/). These map to the same ideas as `Dry::Monads::Result` and `Dry::Transaction`.
+
+### Result ###
+
+
+
+
+
+### Railway Oriented Programming ##
 
 ## Development
 

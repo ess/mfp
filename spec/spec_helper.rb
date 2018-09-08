@@ -1,4 +1,11 @@
 require "bundler/setup"
+
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/'
+  add_filter '/tmp/'
+end
+
 require "quasi_functional"
 
 RSpec.configure do |config|
