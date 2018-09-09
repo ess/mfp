@@ -3,14 +3,14 @@ require 'mfp/result/base'
 module MFP
   module Result
 
-    class Failure < Base
-      def initialize(to_wrap)
-        super
-        freeze
-      end
+    class Failure
+      include Base
 
-      def error
-        @wrapped
+      attr_reader :error
+
+      def initialize(error)
+        @error = error
+        freeze
       end
 
       def failure?
@@ -23,7 +23,7 @@ module MFP
 
       def on_failure
         yield error
-        super
+        self
       end
     end
 

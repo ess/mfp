@@ -3,9 +3,14 @@ require 'mfp/result/base'
 module MFP
   module Result
 
-    class Success < Base
-      def value
-        @wrapped
+    class Success
+      include Base
+
+      attr_reader :value
+
+      def initialize(value)
+        @value = value
+
       end
 
       def success?
@@ -18,7 +23,7 @@ module MFP
 
       def on_success
         yield value
-        super
+        self
       end
     end
 

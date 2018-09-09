@@ -1,11 +1,7 @@
 module MFP
   module Result
 
-    class Base
-      def initialize(to_wrap)
-        @wrapped = to_wrap
-      end
-
+    module Base
       def success?
         false
       end
