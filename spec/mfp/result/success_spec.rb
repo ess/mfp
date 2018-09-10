@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'mfp/result/success'
 
 module MFP
-  module Result
+  class Result
 
     RSpec.describe Success do
       let(:dummy) {Object.new}
@@ -15,7 +15,7 @@ module MFP
       end
 
       it 'is a result' do
-        expect(result).to be_a(Result::Base)
+        expect(result).to be_a(Result)
       end
 
       describe '#success?' do
@@ -50,62 +50,39 @@ module MFP
         end
       end
 
-      describe '#and_then' do
+      describe '#bind' do
         it 'yields the wrapped value to the block' do
           expect(dummy).to receive(:process).with(wrapped)
 
-          result.and_then {|v| dummy.process(v)}
+          result.bind {|v| dummy.process(v)}
         end
 
         it 'is the result of yielding the wrapped value to the block' do
-          actual = result.and_then {|v| v + 1}
+          actual = result.bind {|v| v + 1}
 
           expect(actual).to eql(wrapped + 1)
         end
       end
 
-      describe '#or_else' do
+      describe '#or' do
         it 'does not call the block' do
           expect(dummy).not_to receive(:process)
 
-          result.or_else {|v| dummy.process(v)}
+          result.or {|v| dummy.process(v)}
         end
 
         it 'is the success itself' do
-          actual = result.or_else {|v| v}
+          actual = result.or {|v| v}
 
           expect(actual).to eql(result)
         end
       end
 
-      describe '#on_success' do
-        it 'yields the wrapped value to the block' do
-          expect(dummy).to receive(:process).with(wrapped)
-
-          result.on_success {|v| dummy.process(v)}
-        end
-
+      describe '#to_result' do
         it 'is the success itself' do
-          actual = result.on_success {|v| v}
-
-          expect(actual).to eql(result)
+          expect(result.to_result).to eql(result)
         end
       end
-
-      describe '#on_failure' do
-        it 'does not call the block' do
-          expect(dummy).not_to receive(:process)
-
-          result.on_failure {|v| dummy.process(v)}
-        end
-
-        it 'is the success itself' do
-          actual = result.on_failure {|v| v}
-
-          expect(actual).to eql(result)
-        end
-      end
-
 
     end
 

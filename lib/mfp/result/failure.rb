@@ -1,15 +1,9 @@
-require 'mfp/result/base'
-
 module MFP
-  module Result
+  class Result
 
-    class Failure
-      include Base
-
-      attr_reader :error
-
-      def initialize(error)
-        @error = error
+    class Failure < Result
+      def initialize(to_wrap)
+        super
         freeze
       end
 
@@ -17,13 +11,17 @@ module MFP
         true
       end
 
-      def or_else
-        yield error
+      def or
+        yield failure
       end
 
       def on_failure
-        yield error
+        yield failure
         self
+      end
+
+      def failure
+        wrapped
       end
     end
 

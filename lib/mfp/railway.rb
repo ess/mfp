@@ -3,7 +3,7 @@ require 'mfp/result'
 module MFP
 
   module Railway
-    include Result::DSL
+    include Result::Mixin
 
     module DSL
       def step(name, options = {})
@@ -27,7 +27,7 @@ module MFP
 
       steps.
         inject(Success(input)) {|result, step|
-          result.and_then {|data|
+          result.bind {|data|
             dispatch_step(step, data)
           }
         }
@@ -37,7 +37,7 @@ module MFP
     def dispatch_step(step, data)
       begin
         result = (step[:with] || self).send(step[:name], data)
-        result.is_a?(Result::Base) ? result : Success(result)
+        result.is_a?(Result) ? result : Success(result)
       rescue => error
         Failure(error)
       end

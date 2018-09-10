@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'mfp/result/failure'
 
 module MFP
-  module Result
+  class Result
 
     RSpec.describe Failure do
       let(:dummy) {Object.new}
@@ -15,7 +15,7 @@ module MFP
       end
 
       it 'is a result' do
-        expect(result).to be_a(Result::Base)
+        expect(result).to be_a(Result)
       end
 
       it 'is frozen' do
@@ -46,68 +46,45 @@ module MFP
         end
       end
 
-      describe '#error' do
-        let(:error) {result.error}
+      describe '#failure' do
+        let(:error) {result.failure}
 
         it 'is the wrapped error' do
           expect(error).to eql(wrapped)
         end
       end
 
-      describe '#and_then' do
+      describe '#bind' do
         it 'does not execute the given block' do
           expect(dummy).not_to receive(:process)
 
-          result.and_then {|v| dummy.process(v)}
+          result.bind {|v| dummy.process(v)}
         end
 
         it 'is the failure itself' do
-          actual = result.and_then {|v| v}
+          actual = result.bind {|v| v}
 
           expect(actual).to eql(result)
         end
       end
 
-      describe '#or_else' do
-
+      describe '#or' do
         it 'yields the wrapped value to the block' do
           expect(dummy).to receive(:process).with(wrapped)
 
-          result.or_else {|v| dummy.process(v)}
+          result.or {|v| dummy.process(v)}
         end
 
         it 'is the result of the block' do
-          actual = result.or_else {|v| v + 1}
+          actual = result.or {|v| v + 1}
 
           expect(actual).to eql(wrapped + 1)
         end
       end
 
-      describe '#on_success' do
-        it 'does not call the block' do
-          expect(dummy).not_to receive(:process)
-
-          result.on_success {|v| dummy.process(v)}
-        end
-
+      describe '#to_result' do
         it 'is the failure itself' do
-          actual = result.on_success {|v| v}
-
-          expect(actual).to eql(result)
-        end
-      end
-
-      describe '#on_failure' do
-        it 'yields the wrapped value to the block' do
-          expect(dummy).to receive(:process).with(wrapped)
-
-          result.on_failure {|v| dummy.process(v)}
-        end
-
-        it 'is the failure itself' do
-          actual = result.on_failure {|v| v}
-
-          expect(actual).to eql(result)
+          expect(result.to_result).to eql(result)
         end
       end
 

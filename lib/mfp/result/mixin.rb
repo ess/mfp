@@ -2,9 +2,9 @@ require 'mfp/result/success'
 require 'mfp/result/failure'
 
 module MFP
-  module Result
+  class Result
 
-    module DSL
+    module Mixin
       def Success(value)
         Success.new(value)
       end

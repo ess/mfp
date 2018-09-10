@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'mfp/railway'
 
 class ComplicatedProcess
-  include MFP.Railway
+  include MFP::Railway
 
   step :step_1
   step :step_2
@@ -11,7 +11,7 @@ class ComplicatedProcess
 end
 
 class EmptyProcess
-  include MFP.Railway
+  include MFP::Railway
 end
 
 module MFP
@@ -22,7 +22,7 @@ module MFP
 
     before(:each) do
       steps.each do |step|
-        allow(dummy).to receive(step).and_return(Result.Success(nil))
+        allow(dummy).to receive(step).and_return(Result::Success.new(nil))
       end
     end
 
@@ -45,7 +45,7 @@ module MFP
       context 'when all steps are successful' do
         it 'executes all steps' do
           steps.each do |step|
-            expect(dummy).to receive(step).and_return(Result.Success(nil))
+            expect(dummy).to receive(step).and_return(Result::Success.new(nil))
           end
 
           result
@@ -58,7 +58,7 @@ module MFP
 
       context 'when a step fails' do
         let(:failing_step) {:step_1}
-        let(:failure) {Result.Failure(nil)}
+        let(:failure) {Result::Failure.new(nil)}
 
         before(:each) do
           allow(dummy).to receive(:step_1).and_return(failure)
@@ -113,7 +113,7 @@ module MFP
           end
 
           expect(result).to be_a(Result::Failure)
-          expect(result.error).to eql(error)
+          expect(result.failure).to eql(error)
         end
       end
 
@@ -125,7 +125,7 @@ module MFP
         end
 
         it 'has an error regarding the lack of steps' do
-          expect(result.error).to eql('No steps')
+          expect(result.failure).to eql('No steps')
         end
       end
     end

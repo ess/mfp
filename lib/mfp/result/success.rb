@@ -1,29 +1,22 @@
-require 'mfp/result/base'
-
 module MFP
-  module Result
+  class Result
 
-    class Success
-      include Base
-
-      attr_reader :value
-
-      def initialize(value)
-        @value = value
-
-      end
-
+    class Success < Result
       def success?
         true
       end
 
-      def and_then
+      def bind
         yield value
       end
 
       def on_success
         yield value
         self
+      end
+
+      def value
+        wrapped
       end
     end
 
