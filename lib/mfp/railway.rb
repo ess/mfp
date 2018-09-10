@@ -1,9 +1,9 @@
-require 'mfp/result'
+require 'mfp/monads/result'
 
 module MFP
 
   module Railway
-    include Result::Mixin
+    include Monads::Result::Mixin
 
     module DSL
       def step(name, options = {})
@@ -37,7 +37,7 @@ module MFP
     def dispatch_step(step, data)
       begin
         result = (step[:with] || self).send(step[:name], data)
-        result.is_a?(Result) ? result : Success(result)
+        result.is_a?(Monads::Result) ? result : Success(result)
       rescue => error
         Failure(error)
       end

@@ -22,7 +22,7 @@ module MFP
 
     before(:each) do
       steps.each do |step|
-        allow(dummy).to receive(step).and_return(Result::Success.new(nil))
+        allow(dummy).to receive(step).and_return(Monads::Result::Success.new(nil))
       end
     end
 
@@ -45,20 +45,20 @@ module MFP
       context 'when all steps are successful' do
         it 'executes all steps' do
           steps.each do |step|
-            expect(dummy).to receive(step).and_return(Result::Success.new(nil))
+            expect(dummy).to receive(step).and_return(Monads::Result::Success.new(nil))
           end
 
           result
         end
 
         it 'returns a success' do
-          expect(result).to be_a(Result::Success)
+          expect(result).to be_a(Monads::Result::Success)
         end
       end
 
       context 'when a step fails' do
         let(:failing_step) {:step_1}
-        let(:failure) {Result::Failure.new(nil)}
+        let(:failure) {Monads::Result::Failure.new(nil)}
 
         before(:each) do
           allow(dummy).to receive(:step_1).and_return(failure)
@@ -94,7 +94,7 @@ module MFP
           expect(dummy).to receive(:step_2).with('step_1').and_return('step_2')
           expect(dummy).to receive(:step_3).with('step_2').and_return('step_3')
 
-          expect(result).to be_a(Result::Success)
+          expect(result).to be_a(Monads::Result::Success)
           expect(result.value).to eql('step_3')
         end
       end
@@ -112,7 +112,7 @@ module MFP
             expect(dummy).not_to receive(step)
           end
 
-          expect(result).to be_a(Result::Failure)
+          expect(result).to be_a(Monads::Result::Failure)
           expect(result.failure).to eql(error)
         end
       end
@@ -121,7 +121,7 @@ module MFP
         let(:dummy) {EmptyProcess.new}
 
         it 'is a failure' do
-          expect(result).to be_a(Result::Failure)
+          expect(result).to be_a(Monads::Result::Failure)
         end
 
         it 'has an error regarding the lack of steps' do
