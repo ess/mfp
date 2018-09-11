@@ -15,7 +15,7 @@ module MFP
         vargs = [value]
 
         if block_given?
-          yield *vargs, *args
+          yield(*vargs, *args)
         else
           obj, *rest = args
           obj.(*vargs, *rest)
