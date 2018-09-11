@@ -8,88 +8,74 @@ module MFP
 
       RSpec.describe Some do
         let(:dummy) {Object.new}
-        let(:wrapped) {3}
-        let(:maybe) {described_class.new(wrapped)}
+        let(:upcase) {:upcase.to_proc}
+        let(:wrapped) {'foo'}
+        subject {described_class.new(wrapped)}
+        let(:upcased_subject) { described_class.new('FOO') }
 
         before(:each) do
           allow(dummy).to receive(:process)
         end
 
-        it 'is a maybe' do
-          expect(maybe).to be_a(Maybe)
+        it_behaves_like 'a monad'
+
+        it_behaves_like 'an applicative' do
+          let(:pure) {described_class.method(:new)}
         end
 
-        describe '#some?' do
-          let(:some) {maybe.some?}
+        it {is_expected.to be_some}
+        it {is_expected.not_to be_none}
+        it {is_expected.to eql(described_class.new('foo'))}
+        it {is_expected.not_to eql(None.instance)}
 
-          it 'is true' do
-            expect(some).to eql(true)
+        it 'dumps to a string' do
+          expect(subject.to_s).to eql('Some("foo")')
+        end
+
+        it 'has custom inspection' do
+          expect(subject.inspect).to eql('Some("foo")')
+        end
+
+        describe '.to_proc' do
+          it 'returns a constructor block' do
+            expect(described_class.to_proc.call('foo')).to eql(subject)
           end
         end
 
-        describe '#none?' do
-          let(:none) {maybe.none?}
-
-          it 'is false' do
-            expect(none).to eql(false)
-          end
-        end
-
-        describe '#value' do
-          let(:value) {maybe.value}
-
-          it 'is the wrapped value' do
-            expect(value).to eql(wrapped)
-          end
-        end
-
-        describe '#error' do
-          let(:error) {maybe.error}
-
-          it 'raises an exception' do
-            expect {error}.to raise_exception
-          end
-        end
 
         describe '#bind' do
-          it 'yields the wrapped value to the block' do
-            expect(dummy).to receive(:process).with(wrapped)
-
-            maybe.bind {|v| dummy.process(v)}
+          it 'accepts a proc and does not lift the result' do
+            expect(subject.bind(upcase)).to eql('FOO')
           end
 
-          it 'is the maybe of yielding the wrapped value to the block' do
-            actual = maybe.bind {|v| v + 1}
-
-            expect(actual).to eql(wrapped + 1)
-          end
-        end
-
-        describe '#or' do
-          it 'does not call the block' do
-            expect(dummy).not_to receive(:process)
-
-            maybe.or {|v| dummy.process(v)}
+          it 'accepts a block too' do
+            expect(subject.bind { |s| s.upcase }).to eql('FOO')
           end
 
-          it 'is the success itself' do
-            actual = maybe.or {|v| v}
+          it 'passes extra arguments to a block' do
+            result = subject.bind(:foo) do |value, c|
+              expect(value).to eql('foo')
+              expect(c).to eql(:foo)
+              true
+            end
 
-            expect(actual).to eql(maybe)
+            expect(result).to be true
           end
-        end
 
-        describe '#to_maybe' do
-          it 'is the some itself' do
-            expect(maybe.to_maybe).to eql(maybe)
+          it 'passes extra arguments to a proc' do
+            proc = lambda do |value, c|
+              expect(value).to eql('foo')
+              expect(c).to eql(:foo)
+              true
+            end
+
+            result = subject.bind(proc, :foo)
+
+            expect(result).to be true
           end
         end
 
-        describe '#to_monad' do
-          it 'is the some itself' do
-            expect(maybe.to_monad).to eql(maybe)
-          end
-        end
+
 
       end
 

@@ -18,9 +18,25 @@ module MFP
           vargs = vargs + args
           yield(*vargs)
         else
+          puts "it's failing here"
           obj, *rest = args
           vargs = vargs + rest
-          obj.call(*vargs)
+          puts "vargs == '#{vargs}'"
+          puts "obj == '#{obj}'"
+          if obj.respond_to?(:lambda?)
+            if obj.lambda?
+              if obj.arity < 1
+                obj.call
+              else
+                vargs = vargs.first(obj.arity)
+                obj.call(*vargs)
+              end
+            else
+              obj.call(*vargs)
+            end
+          else
+            obj.call(*vargs)
+          end
         end
       end
 

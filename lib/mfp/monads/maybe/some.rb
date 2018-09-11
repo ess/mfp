@@ -1,17 +1,20 @@
+require 'mfp/monads/righty'
+require 'mfp/equalizer'
+
 module MFP
   module Monads
     class Maybe
 
       class Some < Maybe
-        def bind
-          yield value
+        include Righty
+
+        def ==(other)
+          Equalizer.operator(self, other, :value!)
         end
 
-        def value
-          wrapped
+        def eql?(other)
+          Equalizer.predicate(self, other, :value!)
         end
-        alias_method :value!, :value
-        alias_method :value_or, :value
 
         def some?
           true
@@ -20,6 +23,8 @@ module MFP
         def to_s
           "Some(#{wrapped.inspect})"
         end
+        alias_method :inspect, :to_s
+
       end
 
     end
