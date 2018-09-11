@@ -15,10 +15,12 @@ module MFP
         vargs = [value]
 
         if block_given?
-          yield(*vargs, *args)
+          vargs = vargs + args
+          yield(*vargs)
         else
           obj, *rest = args
-          obj.(*vargs, *rest)
+          vargs = vargs + rest
+          obj.send(*vargs)
         end
       end
     end
