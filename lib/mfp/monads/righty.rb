@@ -20,8 +20,20 @@ module MFP
         else
           obj, *rest = args
           vargs = vargs + rest
-          obj.send(*vargs)
+          obj.(*vargs)
         end
+      end
+
+      def value_or(_val = nil)
+        value
+      end
+
+      def or_fmap(*)
+        self
+      end
+
+      def tee(*args, &block)
+        bind(*args, &block).bind {self}
       end
     end
 

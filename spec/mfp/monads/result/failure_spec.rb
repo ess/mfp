@@ -9,22 +9,24 @@ module MFP
       RSpec.describe Failure do
         let(:dummy) {Object.new}
         let(:wrapped) {3}
-        let(:result) {described_class.new(wrapped)}
+        subject {described_class.new(wrapped)}
 
         before(:each) do
           allow(dummy).to receive(:process)
         end
 
+        it_behaves_like 'a monad'
+
         it 'is a result' do
-          expect(result).to be_a(Result)
+          expect(subject).to be_a(Result)
         end
 
         it 'is frozen' do
-          expect(result).to be_frozen
+          expect(subject).to be_frozen
         end
 
         describe '#success?' do
-          let(:success) {result.success?}
+          let(:success) {subject.success?}
 
           it 'is false' do
             expect(success).to eql(false)
@@ -32,7 +34,7 @@ module MFP
         end
 
         describe '#failure?' do
-          let(:failure) {result.failure?}
+          let(:failure) {subject.failure?}
 
           it 'is true' do
             expect(failure).to eql(true)
@@ -40,7 +42,7 @@ module MFP
         end
 
         describe '#failure' do
-          let(:error) {result.failure}
+          let(:error) {subject.failure}
 
           it 'is the wrapped error' do
             expect(error).to eql(wrapped)
@@ -51,13 +53,13 @@ module MFP
           it 'does not execute the given block' do
             expect(dummy).not_to receive(:process)
 
-            result.bind {|v| dummy.process(v)}
+            subject.bind {|v| dummy.process(v)}
           end
 
           it 'is the failure itself' do
-            actual = result.bind {|v| v}
+            actual = subject.bind {|v| v}
 
-            expect(actual).to eql(result)
+            expect(actual).to eql(subject)
           end
         end
 
@@ -65,11 +67,11 @@ module MFP
           it 'yields the wrapped value to the block' do
             expect(dummy).to receive(:process).with(wrapped)
 
-            result.or {|v| dummy.process(v)}
+            subject.or {|v| dummy.process(v)}
           end
 
           it 'is the result of the block' do
-            actual = result.or {|v| v + 1}
+            actual = subject.or {|v| v + 1}
 
             expect(actual).to eql(wrapped + 1)
           end
@@ -77,13 +79,13 @@ module MFP
 
         describe '#to_result' do
           it 'is the failure itself' do
-            expect(result.to_result).to eql(result)
+            expect(subject.to_result).to eql(subject)
           end
         end
 
         describe '#value!' do
           it 'raises an unwrap error' do
-            expect {result.value!}.
+            expect {subject.value!}.
               to raise_error(MFP::Monads::UnwrapError)
           end
         end

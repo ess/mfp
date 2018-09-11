@@ -1,4 +1,5 @@
 require 'mfp/monads/lefty'
+require 'mfp/equalizer'
 
 module MFP
   module Monads
@@ -10,6 +11,14 @@ module MFP
         def initialize(to_wrap)
           super
           freeze
+        end
+
+        def ==(other)
+          Equalizer.operator(self, other, :failure)
+        end
+
+        def eql?(other)
+          Equalizer.predicate(self, other, :failure)
         end
 
         def failure?

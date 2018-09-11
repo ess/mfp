@@ -1,4 +1,5 @@
 require 'mfp/monads/righty'
+require 'mfp/equalizer'
 
 module MFP
   module Monads
@@ -6,6 +7,14 @@ module MFP
 
       class Success < Result
         include Righty
+
+        def ==(other)
+          Equalizer.operator(self, other, :value!)
+        end
+
+        def eql?(other)
+          Equalizer.predicate(self, other, :value!)
+        end
 
         def success?
           true
