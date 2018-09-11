@@ -1,8 +1,12 @@
+require 'spec_helper'
+
 require 'mfp/monads/maybe'
-require 'mfp/monads/result'
 
 module MFP
   module Monads
-    extend Result::Mixin
+
+    RSpec.describe Maybe do
+    end
+
   end
 end
