@@ -34,6 +34,7 @@ module MFP
         def to_s
           'None'
         end
+        alias_method :inspect, :to_s
 
         def or(*args)
           if block_given?
