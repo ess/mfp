@@ -24,6 +24,13 @@ module MFP
 
         it_behaves_like 'a monad'
 
+        it { is_expected.to be_success }
+
+        it { is_expected.not_to be_failure }
+
+        it { is_expected.to eql(described_class.new('foo')) }
+        it { is_expected.not_to eql(Failure.new('foo')) }
+
         it 'dumps to string' do
           expect(subject.to_s).to eql('Success("foo")')
         end
@@ -180,6 +187,48 @@ module MFP
             expect(subject.value_or { 'baz' }).to eql(subject.value!)
           end
         end
+
+        describe '#flip' do
+          it 'transforms Success to Failure' do
+            expect(subject.flip).to eql(Failure.new('foo'))
+          end
+        end
+
+        #describe '#apply' do
+          #subject { described_class.new(:upcase.to_proc) }
+
+          #it 'applies a wrapped function' do
+            #expect(subject.apply(described_class.new('foo'))).
+                   #to eql(described_class.new('FOO'))
+            #expect(subject.apply(Failure.new('foo'))).to eql(Failure.new('foo'))
+          #end
+        #end
+
+        describe '#value!' do
+          it 'unwraps the value' do
+            expect(subject.value!).to eql('foo')
+          end
+        end
+
+        describe '#===' do
+          it 'matches on the wrapped value' do
+            expect(described_class.new('foo')).
+              to be === described_class.new('foo')
+            expect(described_class.new(/\w+/)).
+              to be === described_class.new('foo')
+            expect(described_class.new(:bar)).
+              not_to be === described_class.new('foo')
+            expect(described_class.new(10..50)).
+              to be === described_class.new(42)
+          end
+        end
+
+        describe '#discard' do
+          it 'nullifies the value' do
+            expect(Success.new('foo').discard).to eql(Success.new(Unit))
+          end
+        end
+
 
         #describe '#to_validated' do
           #it 'returns Valid' do
