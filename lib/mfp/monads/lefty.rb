@@ -1,4 +1,5 @@
 require 'mfp/monads/errors'
+require 'mfp/monads/unit'
 
 module MFP
   module Monads
@@ -12,12 +13,20 @@ module MFP
         self
       end
 
-      def or(*args)
-        if block_given?
-          yield @wrapped
-        else
-          args.first
-        end
+      def tee(*)
+        self
+      end
+
+      def fmap(*)
+        self
+      end
+
+      def or(*)
+        raise NotImplementedError
+      end
+
+      def or_fmap(*)
+        raise NotImplementedError
       end
 
       def value_or(val = nil)
@@ -26,6 +35,10 @@ module MFP
         else
           val
         end
+      end
+
+      def discard
+        fmap {Unit}
       end
     end
 

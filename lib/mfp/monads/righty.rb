@@ -48,6 +48,10 @@ module MFP
       def tee(*args, &block)
         bind(*args, &block).bind {self}
       end
+
+      def discard
+        fmap {Unit}
+      end
     end
 
   end
