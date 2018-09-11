@@ -1,8 +1,12 @@
+require 'mfp/monads/lefty'
+
 module MFP
   module Monads
     class Result
 
       class Failure < Result
+        include Lefty
+
         def initialize(to_wrap)
           super
           freeze
@@ -10,15 +14,6 @@ module MFP
 
         def failure?
           true
-        end
-
-        def or
-          yield failure
-        end
-
-        def on_failure
-          yield failure
-          self
         end
 
         def failure

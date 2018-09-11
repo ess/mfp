@@ -1,3 +1,4 @@
+require 'mfp/monads/base'
 require 'mfp/monads/result/mixin'
 require 'mfp/monads/result/success'
 require 'mfp/monads/result/failure'
@@ -6,6 +7,8 @@ module MFP
   module Monads
 
     class Result
+      include Base
+
       def initialize(to_wrap)
         @wrapped = to_wrap
       end
@@ -14,27 +17,15 @@ module MFP
         self
       end
 
-      def to_monad
-        self
-      end
-
       def monad
         Result
       end
 
-      def bind
-        self
-      end
-
-      def or
-        self
-      end
-
-      def success?
+      def failure?
         false
       end
 
-      def failure?
+      def success?
         false
       end
 

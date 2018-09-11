@@ -1,24 +1,26 @@
+require 'mfp/monads/righty'
+
 module MFP
   module Monads
     class Result
 
       class Success < Result
+        include Righty
+
         def success?
           true
         end
 
-        def bind
-          yield value
+        def fmap(*args, &block)
+          Success.new(bind(*args, &block))
         end
 
-        def on_success
-          yield value
-          self
+        def to_s
+          "Success(#{wrapped.inspect})"
         end
 
-        def value
-          wrapped
-        end
+        alias_method :success, :value!
+        alias_method :inspect, :to_s
       end
 
     end

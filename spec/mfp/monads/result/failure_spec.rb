@@ -39,14 +39,6 @@ module MFP
           end
         end
 
-        describe '#value' do
-          let(:value) {result.value}
-
-          it 'raises an exception' do
-            expect {value}.to raise_exception
-          end
-        end
-
         describe '#failure' do
           let(:error) {result.failure}
 
@@ -86,6 +78,13 @@ module MFP
         describe '#to_result' do
           it 'is the failure itself' do
             expect(result.to_result).to eql(result)
+          end
+        end
+
+        describe '#value!' do
+          it 'raises an unwrap error' do
+            expect {result.value!}.
+              to raise_error(MFP::Monads::UnwrapError)
           end
         end
 

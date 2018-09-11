@@ -43,14 +43,6 @@ module MFP
           end
         end
 
-        describe '#error' do
-          let(:error) {result.error}
-
-          it 'raises an exception' do
-            expect {error}.to raise_exception
-          end
-        end
-
         describe '#bind' do
           it 'yields the wrapped value to the block' do
             expect(dummy).to receive(:process).with(wrapped)
