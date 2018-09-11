@@ -19,7 +19,7 @@ module MFP
         end
 
         def eql?(other)
-          other.is_a(None)
+          other.is_a?(None)
         end
 
         def ===(other)
@@ -29,10 +29,28 @@ module MFP
         def none?
           true
         end
+        alias_method :failure?, :none?
 
         def to_s
           'None'
         end
+
+        def or(*args)
+          if block_given?
+            yield(*args)
+          else
+            args.first
+          end
+        end
+
+        def or_fmap(*args, &block)
+          Maybe.coerce(self.or(*args, &block))
+        end
+
+        def some?
+          false
+        end
+        alias_method :success?, :some?
 
         def self.new(*)
           @@instance
