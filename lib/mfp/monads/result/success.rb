@@ -1,5 +1,6 @@
 require 'mfp/monads/righty'
 require 'mfp/monads/result/failure'
+require 'mfp/monads/maybe'
 require 'mfp/equalizer'
 
 module MFP
@@ -35,6 +36,14 @@ module MFP
 
         def flip
           Failure.new(wrapped)
+        end
+
+        def result(_, f)
+          f.call(wrapped)
+        end
+
+        def to_maybe
+          Maybe.coerce(wrapped)
         end
 
         alias_method :success, :value!

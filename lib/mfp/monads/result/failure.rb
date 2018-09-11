@@ -1,4 +1,5 @@
 require 'mfp/monads/lefty'
+require 'mfp/monads/maybe'
 require 'mfp/monads/result/success'
 require 'mfp/equalizer'
 
@@ -53,6 +54,14 @@ module MFP
 
         def flip
           Success.new(wrapped)
+        end
+
+        def to_maybe
+          Maybe::None.new
+        end
+
+        def result(f, _)
+          f.call(wrapped)
         end
 
         def ===(other)

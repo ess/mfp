@@ -71,16 +71,16 @@ module MFP
           end
         end
 
-        #describe '#result' do
-          #subject do
-            #described_class.new('Foo').result(
-              #lambda { |v| v.downcase },
-              #lambda { |v| v.upcase }
-            #)
-          #end
+        describe '#result' do
+          subject do
+            described_class.new('Foo').result(
+              lambda { |v| v.downcase },
+              lambda { |v| v.upcase }
+            )
+          end
 
-          #it { is_expected.to eq('FOO') }
-        #end
+          it { is_expected.to eq('FOO') }
+        end
 
         describe '#fmap' do
           it 'accepts a proc and lifts the result to Result' do
@@ -152,20 +152,19 @@ module MFP
           end
         end
 
-        #describe '#to_maybe' do
-          #subject { described_class.new('foo').to_maybe }
+        describe '#to_maybe' do
+          subject { described_class.new('foo').to_maybe }
 
-          #it { is_expected.to be_an_instance_of maybe::Some }
-          #it { is_expected.to eql(some['foo']) }
+          it { is_expected.to be_an_instance_of Maybe::Some }
+          it { is_expected.to eql(Maybe::Some.new('foo')) }
 
-          #context 'value is nil' do
-            #around { |ex| suppress_warnings { ex.run } }
-            #subject { described_class.new(nil).to_maybe }
+          context 'value is nil' do
+            subject { described_class.new(nil).to_maybe }
 
-            #it { is_expected.to be_an_instance_of maybe::None }
-            #it { is_expected.to eql(maybe::None.new) }
-          #end
-        #end
+            it { is_expected.to be_an_instance_of Maybe::None }
+            it { is_expected.to eql(Maybe::None.new) }
+          end
+        end
 
         describe '#tee' do
           it 'passes through itself when the block returns a Success' do

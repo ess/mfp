@@ -49,16 +49,16 @@ module MFP
           end
         end
 
-        #describe '#result' do
-          #subject do
-            #result::Failure.new('Foo').result(
-              #lambda { |v| v.downcase },
-              #lambda { |v| v.upcase }
-            #)
-          #end
+        describe '#result' do
+          subject do
+            described_class.new('Foo').result(
+              lambda { |v| v.downcase },
+              lambda { |v| v.upcase }
+            )
+          end
 
-          #it { is_expected.to eq('foo') }
-        #end
+          it { is_expected.to eq('foo') }
+        end
 
         describe '#fmap' do
           it 'accepts a proc and returns itself' do
@@ -124,16 +124,16 @@ module MFP
           end
         end
 
-        #describe '#to_maybe' do
-          #let(:subject) { described_class.new('bar').to_maybe }
+        describe '#to_maybe' do
+          let(:subject) { described_class.new('bar').to_maybe }
 
-          #it { is_expected.to be_an_instance_of Maybe::None }
-          #it { is_expected.to eql(Maybe::None.new) }
+          it { is_expected.to be_an_instance_of Maybe::None }
+          it { is_expected.to eql(Maybe::None.new) }
 
           #it 'tracks the caller' do
             #expect(subject.to_maybe.trace).to include("spec/unit/result_spec.rb")
           #end
-        #end
+        end
 
         describe '#tee' do
           it 'accepts a proc and returns itself' do
