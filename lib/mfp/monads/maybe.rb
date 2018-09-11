@@ -1,5 +1,5 @@
 require 'mfp/monads/base'
-#require 'mfp/monads/maybe/mixin'
+require 'mfp/monads/maybe/mixin'
 require 'mfp/monads/maybe/some'
 require 'mfp/monads/maybe/none'
 require 'mfp/constants'
