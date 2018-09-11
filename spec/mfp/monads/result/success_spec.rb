@@ -162,12 +162,12 @@ module MFP
 
         describe '#tee' do
           it 'passes through itself when the block returns a Success' do
-            expect(subject.tee(->(*) { described_class.new('ignored') })).to eql(subject)
+            expect(subject.tee(lambda { described_class.new('ignored') })).to eql(subject)
           end
 
           it 'returns the block result when it is a Failure' do
-            expect(subject.tee(->(*) { Failure.new('failure') }))
-              .to be_an_instance_of Failure
+            expect(subject.tee(lambda { Failure.new('failure') })).
+              to be_an_instance_of Failure
           end
         end
 

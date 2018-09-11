@@ -20,7 +20,7 @@ module MFP
         else
           obj, *rest = args
           vargs = vargs + rest
-          obj.(*vargs)
+          obj.call(*vargs)
         end
       end
 
