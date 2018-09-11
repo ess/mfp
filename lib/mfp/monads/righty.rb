@@ -18,11 +18,8 @@ module MFP
           vargs = vargs + args
           yield(*vargs)
         else
-          puts "it's failing here"
           obj, *rest = args
           vargs = vargs + rest
-          puts "vargs == '#{vargs}'"
-          puts "obj == '#{obj}'"
           if obj.respond_to?(:lambda?)
             if obj.lambda?
               if obj.arity < 1
